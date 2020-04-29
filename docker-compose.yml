@@ -1,0 +1,29 @@
+services: 
+  dbos: 
+    environment: 
+      MYSQL_DATABASE: mydb
+      MYSQL_PASSWORD: arjun123
+      MYSQL_ROOT_PASSWORD: arjun123
+      MYSQL_USER: arjun
+    image: mysql:5.7
+    restart: always
+    volumes: 
+      - "mysql_storage_new1:/var/lib/mysql"
+  wordpressos: 
+    depends_on: 
+      - "dbos"
+    image: wordpress:5.1.1-php7.3-apache
+    ports: 
+      - "8081:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: dbos
+      WORDPRESS_DB_USER: arjun
+      WORDPRESS_DB_PASSWORD: arjun123
+      WORDPRESS_DB_NAME: mydb
+    volumes:
+      - "wp_storage_new1:/var/www/html"
+volumes:
+  wp_storage_new1:
+  mysql_storage_new1:
+version: "3"
